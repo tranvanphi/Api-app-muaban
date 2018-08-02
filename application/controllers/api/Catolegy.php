@@ -10,14 +10,17 @@ use \Firebase\JWT\JWT;
 
 Class Catolegy extends REST_Controller{
 
+    protected $allowed_http_methods = array('get', 'delete', 'post', 'put', 'patch', 'head');
+
     public function __construct(){
         parent::__construct();
         $this->load->model('Catolegy_model');
-
-        header('Content-Type: application/json');
-		header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Access-Control-Allow-Origin: * ");
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, No-Auth");  
+        $method = $_SERVER['REQUEST_METHOD'];
+        if($method == "OPTIONS") {
+            die();
+        }
     }
 
 

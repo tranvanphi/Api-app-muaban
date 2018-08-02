@@ -8,8 +8,15 @@ Class User_model extends CI_model
         parent::__construct();
     }
 
-    public function findAll(){
-        echo 'table uesr';
+    public function findId($id){
+        $this->db->select('*');
+        $this->db->where('id',$id);
+        $query = $this->db->get($this->tableUser);
+        if ($query->num_rows() == 1) {
+            $result = $query->result();
+            return $result[0];
+        }
+        return false;
     }
     
     public function login($username, $password){
@@ -24,5 +31,19 @@ Class User_model extends CI_model
         return false;
     }
 
+    public function check_exist($username){
+        $this->db->where('username',$username);
+        $query = $this->db->get($this->tableUser);
+        if ($query->num_rows() >= 1) {
+            return  true;
+        }
+        return false;
+    }
+
+    public function insertUser($data)
+    {
+        $this->db->insert($this->tableUser,$data);
+        return $this->db->insert_id();
+    }
    
 }

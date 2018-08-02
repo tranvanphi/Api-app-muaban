@@ -40,7 +40,7 @@ Class User extends REST_Controller{
             $date = new DateTime();
             $token['iat'] = $date->getTimestamp();
             $token['exp'] = $date->getTimestamp() + 60*60*5;
-            $output['username'] = $result->username;
+            $output['name'] = $result->name;
             $output['user_token'] = JWT::encode($token, $secretSignature);
             $this->set_response($output, REST_Controller::HTTP_OK);
         }
@@ -72,6 +72,40 @@ Class User extends REST_Controller{
                 $this->response($invalid, 401);//401
             }   
         }
+    }
+
+    function register_post()
+    {
+        $n = $this->post('name');
+        $u = $this->post('username');
+        $e = $this->post('email');
+        $p = md5($this->post('password'));
+        $invalidRegister = ['exist' => $u];
+        $existUser = $this->User_model->check_exist($u);
+        if(!$existUser)
+        {
+            $data = array(
+                'name'      => $n,
+                'username'  => $u,
+                'password'  => $p,
+                'email'     => $e
+            );
+            $id = $this->User_model->insertUser($data);   
+            $secretSignature = $this->config->item('secretkey');
+            $token['id'] = $id;
+            $token['name'] = $n;
+            $token['email'] = $e;
+            $date = new DateTime();
+            $token['iat'] = $date->getTimestamp();
+            $token['exp'] = $date->getTimestamp() + 60*60*5;
+            $output['name'] = $n;
+            $output['user_token'] = JWT::encode($token, $secretSignature);
+            $this->set_response($output, REST_Controller::HTTP_OK);
+            
+        }else{
+            $this->set_response($invalidRegister, REST_Controller::HTTP_OK);
+        }
+        
     }
 
 }
