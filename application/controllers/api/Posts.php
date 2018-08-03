@@ -25,7 +25,7 @@ Class Posts extends REST_Controller{
 
     function listposts_post(){
         $data = array();
-        $limit = 4; 
+        $limit = 3; 
         // print_r($_POST);  
         if(isset($_POST['name']))    { $name     = $this->post('name'); }
         if(isset($_POST['page']))    { $page     = $this->post('page'); }
@@ -62,7 +62,7 @@ Class Posts extends REST_Controller{
 
     function listPostsChild_post(){
         $data = array();
-        $limit = 4;  
+        $limit = 3;  
         if(isset($_POST['id']))      { $id     = $this->post('id'); }
         if(isset($_POST['page']))    { $page     = $this->post('page'); }
         if(isset($_POST['typeUser'])){ $typeUser = $this->post('typeUser');}
